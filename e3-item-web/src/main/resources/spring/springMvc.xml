@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+         http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+        <!-- controller扫描 -->
+        <context:component-scan base-package="com.e3"></context:component-scan>
+        <context:property-placeholder location="classpath:*.properties"/>
+        <!-- 配置视图解析器 -->
+        <bean id="" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        	<property name="prefix" value="/WEB-INF/jsp/"></property>
+        	<property name="suffix" value=".jsp"></property>
+        </bean>
+        <!-- freemaker配置 -->
+        <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        	<property name="defaultEncoding" value="utf-8"></property>
+        	<property name="templateLoaderPath" value="/WEB-INF/fm/"></property>
+        </bean>
+        <!-- 注解开启 -->
+        <mvc:annotation-driven></mvc:annotation-driven>
+        <!-- 引用dubbo服务 -->
+		<dubbo:application name="e3-item-web"/>
+		<dubbo:registry protocol="zookeeper" address="192.168.199.128:2181"/>	
+        <dubbo:reference interface="com.e3.shop.service.ItemService" id="itemService" timeout="300000"></dubbo:reference>
+        
+</beans>
